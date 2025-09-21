@@ -25,6 +25,7 @@
 
 ## 프로젝트 배포
 서버 주소
+- https://www.devhyeon.com/myscheduler
 
 ### 관리자 계정  
 
