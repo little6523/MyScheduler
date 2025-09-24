@@ -18,11 +18,23 @@ public class UserApiController {
   private UserApiService userApiService;
 
   @PostMapping("/signup")
-  public ResponseEntity<Map<String, Object>> test(@RequestBody UserDTO userDTO) {
+  public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDTO userDTO) {
     Map<String, Object> result = new HashMap<>();
     HttpHeaders headers = new HttpHeaders();
 
     userApiService.signUp(userDTO);
+
+    result.put("result", "성공");
+
+    return ResponseEntity.ok().headers(headers).body(result);
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<Map<String, Object>> login(@RequestBody UserDTO userDTO) {
+    Map<String, Object> result = new HashMap<>();
+    HttpHeaders headers = new HttpHeaders();
+
+    userApiService.login(userDTO);
 
     result.put("result", "성공");
 
