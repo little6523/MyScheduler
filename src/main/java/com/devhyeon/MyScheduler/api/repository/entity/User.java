@@ -16,11 +16,13 @@ public class User {
   private Long seq;
 
   @NonNull
+  @Column(unique = true)
   private String id;
 
   @NonNull
   private String password;
 
+  @Column(unique = true)
   private String email;
 
   @NonNull

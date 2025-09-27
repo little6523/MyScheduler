@@ -14,8 +14,11 @@ public class SecurityConfig {
           "/",
           "/myscheduler/login",
           "/myscheduler/signup",
+          "/api/signup",
+          "/api/login",
           "/css/**",
-          "/html/**"
+          "/html/**",
+          "/js/**"
   };
 
   @Bean
@@ -33,13 +36,15 @@ public class SecurityConfig {
                     .defaultSuccessUrl("/myscheduler", true)
                     .permitAll()
             )
-            .logout(logout -> logout.permitAll());
+            .logout(logout -> logout.permitAll())
+            .csrf(csrf -> csrf.disable());
 
     return http.build();
   }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
+    System.out.println("BCryptPasswordEncoder 호출!!");
     return new BCryptPasswordEncoder();
   }
 }

@@ -93,7 +93,20 @@
     e.preventDefault();
     updateSubmit();
     if (submitBtn.disabled) return;
-    alert('화면 데모용: 유효성 통과. 실제 전송 로직은 연결되지 않았습니다.');
+
+    fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: userId.value,
+        password: password.value,
+        email: email.value,
+      }),
+    }).then((response) => console.log(response));
+
+    alert('회원가입 성공!');
   });
 
   // 초기 상태 반영

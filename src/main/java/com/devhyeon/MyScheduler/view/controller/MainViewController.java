@@ -10,6 +10,6 @@ public class MainViewController {
 
   @GetMapping("")
   public String getScheduleManageView() {
-    return "index";
+    return "forward:/html/index.html";
   }
 }

@@ -29,10 +29,4 @@ public class UserApiServiceImpl implements UserApiService {
 
     userApiRepository.save(user);
   }
-
-  @Override
-  public void login(UserDTO userDTO) {
-    User user = userApiRepository.findById(userDTO.getId())
-            .orElseThrow(() -> new UsernameNotFoundException("해당 ID를 가진 유저를 찾을 수 없습니다."));
-  }
 }
