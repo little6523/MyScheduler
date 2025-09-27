@@ -5,7 +5,6 @@ import com.devhyeon.MyScheduler.api.repository.UserApiRepository;
 import com.devhyeon.MyScheduler.api.repository.entity.User;
 import com.devhyeon.MyScheduler.api.service.UserApiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
