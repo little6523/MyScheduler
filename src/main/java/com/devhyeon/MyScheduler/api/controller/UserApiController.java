@@ -18,7 +18,7 @@ public class UserApiController {
   private UserApiService userApiService;
 
   @PostMapping("/signup")
-  public ResponseEntity<Map<String, Object>> test(@RequestBody UserDTO userDTO) {
+  public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDTO userDTO) {
     Map<String, Object> result = new HashMap<>();
     HttpHeaders headers = new HttpHeaders();
 
