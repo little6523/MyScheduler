@@ -28,16 +28,4 @@ public class UserApiController {
 
     return ResponseEntity.ok().headers(headers).body(result);
   }
-
-  @PostMapping("/login")
-  public ResponseEntity<Map<String, Object>> login(@RequestBody UserDTO userDTO) {
-    Map<String, Object> result = new HashMap<>();
-    HttpHeaders headers = new HttpHeaders();
-
-    userApiService.login(userDTO);
-
-    result.put("result", "성공");
-
-    return ResponseEntity.ok().headers(headers).body(result);
-  }
 }

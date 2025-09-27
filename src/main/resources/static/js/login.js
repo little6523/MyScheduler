@@ -50,13 +50,13 @@
   loginPassword.addEventListener('input', () => { validatePassword(); updateSubmit(); });
 
   form.addEventListener('submit', (e) => {
-    e.preventDefault();
     updateSubmit();
     if (submitBtn.disabled) return;
-    alert('화면 데모용: 로그인 입력 유효성 통과. 실제 인증은 연결되지 않았습니다.');
+
   });
 
   updateSubmit();
 })();
+
 
 

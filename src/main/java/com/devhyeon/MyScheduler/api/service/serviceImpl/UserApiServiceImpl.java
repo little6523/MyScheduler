@@ -5,7 +5,6 @@ import com.devhyeon.MyScheduler.api.repository.UserApiRepository;
 import com.devhyeon.MyScheduler.api.repository.entity.User;
 import com.devhyeon.MyScheduler.api.service.UserApiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +27,5 @@ public class UserApiServiceImpl implements UserApiService {
     );
 
     userApiRepository.save(user);
-  }
-
-  @Override
-  public void login(UserDTO userDTO) {
-    User user = userApiRepository.findById(userDTO.getId())
-            .orElseThrow(() -> new UsernameNotFoundException("해당 ID를 가진 유저를 찾을 수 없습니다."));
   }
 }

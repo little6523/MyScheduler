@@ -103,8 +103,34 @@ body {
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 .btn-secondary { background: #e2e8f0; color: #2d3748; }
 
+.signup-link {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.signup-link p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.signup-link-text {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.signup-link-text:hover {
+    color: #3730a3;
+    text-decoration: underline;
+}
+
 @media (max-width: 420px) {
     .status-text { display: none; }
 }
+
 
 
