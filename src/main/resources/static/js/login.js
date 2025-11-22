@@ -50,9 +50,35 @@
   loginPassword.addEventListener('input', () => { validatePassword(); updateSubmit(); });
 
   form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
     updateSubmit();
     if (submitBtn.disabled) return;
 
+    const loginIdValue = loginId.value;
+    const loginPasswordValue = loginPassword.value;
+
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "id": loginIdValue,
+        "password": loginPasswordValue
+      })
+    })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+
+          if (data.loginSuccessYn === "Y") {
+            alert("로그인 성공!");
+            window.location.href = "/myscheduler";
+          } else {
+            alert(data.message);
+          }
+        })
   });
 
   updateSubmit();
