@@ -297,7 +297,8 @@ class ScheduleManager {
 
     // 유틸리티 함수들
     formatDate(date) {
-        return date.toISOString().split('T')[0];
+        const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+        return kstDate.toISOString().split('T')[0];
     }
 
     isToday(date) {
