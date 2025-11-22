@@ -1,7 +1,7 @@
 package com.devhyeon.MyScheduler.security;
 
 import com.devhyeon.MyScheduler.api.repository.UserApiRepository;
-import com.devhyeon.MyScheduler.api.repository.entity.MyUser;
+import com.devhyeon.MyScheduler.api.repository.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-    MyUser user = userApiRepository.findById(id)
+    User user = userApiRepository.findById(id)
             .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
     return org.springframework.security.core.userdetails.User.builder()
