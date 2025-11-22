@@ -2,7 +2,7 @@ package com.devhyeon.MyScheduler.api.service.serviceImpl;
 
 import com.devhyeon.MyScheduler.api.dto.UserDTO;
 import com.devhyeon.MyScheduler.api.repository.UserApiRepository;
-import com.devhyeon.MyScheduler.api.repository.entity.MyUser;
+import com.devhyeon.MyScheduler.api.repository.entity.User;
 import com.devhyeon.MyScheduler.api.service.UserApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +19,7 @@ public class UserApiServiceImpl implements UserApiService {
 
   @Override
   public void signUp(UserDTO userDTO) {
-    MyUser user = new MyUser(
+    User user = new User(
             userDTO.getId(),
             passwordEncoder.encode(userDTO.getPassword()),
             userDTO.getEmail(),

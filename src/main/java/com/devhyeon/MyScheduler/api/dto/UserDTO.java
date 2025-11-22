@@ -1,6 +1,6 @@
 package com.devhyeon.MyScheduler.api.dto;
 
-import com.devhyeon.MyScheduler.api.repository.entity.MyUser;
+import com.devhyeon.MyScheduler.api.repository.entity.User;
 import com.devhyeon.MyScheduler.common.category.Role;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,8 +17,8 @@ public class UserDTO {
   private String email;
   private Role role = Role.user;
 
-  public MyUser toEntity() {
-    return new MyUser(
+  public User toEntity() {
+    return new User(
             this.id,
             this.password,
             this.email,
