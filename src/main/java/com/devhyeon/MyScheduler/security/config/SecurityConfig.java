@@ -14,6 +14,7 @@ public class SecurityConfig {
           "/",
           "/myscheduler/login",
           "/myscheduler/signup",
+          "/myscheduler",
           "/api/signup",
           "/api/login",
           "/css/**",
