@@ -1,22 +1,26 @@
 package com.devhyeon.MyScheduler.security.config;
 
+import com.devhyeon.MyScheduler.security.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class SecurityConfig {
+
+  private final CustomUserDetailsService customUserDetailsService;
 
   private final String[] permitUrlPatterns = {
           "/",
@@ -25,10 +29,15 @@ public class SecurityConfig {
           "/myscheduler",
           "/api/signup",
           "/api/login",
+          "/api/loginYn",
           "/css/**",
           "/html/**",
           "/js/**"
   };
+
+  public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+    this.customUserDetailsService = customUserDetailsService;
+  }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -53,9 +62,23 @@ public class SecurityConfig {
 //                    })
             )
             .logout(logout -> logout.permitAll())
-            .csrf(csrf -> csrf.disable());
+            .csrf(csrf -> csrf.disable())
+            .authenticationProvider(authenticationProvider());
 
     return http.build();
+  }
+
+  public AuthenticationProvider authenticationProvider() {
+    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    provider.setUserDetailsService(customUserDetailsService); // DB 조회
+    provider.setPasswordEncoder(passwordEncoder());          // BCrypt 비교
+    return provider;
+  }
+
+
+  @Bean
+  public SecurityContextRepository securityContextRepository() {
+    return new HttpSessionSecurityContextRepository();
   }
 
   @Bean
@@ -89,8 +112,8 @@ public class SecurityConfig {
     response.getWriter().write(json);
   }
 
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-    return config.getAuthenticationManager();
-  }
+//  @Bean
+//  public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+//    return config.getAuthenticationManager();
+//  }
 }
