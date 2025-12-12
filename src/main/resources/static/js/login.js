@@ -74,7 +74,7 @@
 
           if (data.loginSuccessYn === "Y") {
             alert("로그인 성공!");
-            window.location.href = "/myscheduler";
+            window.location.href = "/myscheduler/schedule";
           } else {
             alert(data.message);
           }
