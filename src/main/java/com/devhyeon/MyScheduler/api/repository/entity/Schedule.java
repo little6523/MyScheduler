@@ -1,13 +1,16 @@
 package com.devhyeon.MyScheduler.api.repository.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "schedules")
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Schedule {
 
   @Id
@@ -25,6 +28,7 @@ public class Schedule {
 
   private String colorId;
 
+  @Column(name = "created_at", insertable = false)
   private LocalDateTime createdAt;
 
   private LocalDateTime updatedAt;

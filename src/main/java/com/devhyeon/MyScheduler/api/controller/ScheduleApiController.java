@@ -25,7 +25,8 @@ public class ScheduleApiController {
   }
 
   @PostMapping("/schedules")
-  public ResponseEntity<String> addSchedule(@RequestBody ScheduleDTO scheduleDTO) {
-    return ResponseEntity.ok("hello");
+  public ResponseEntity<ScheduleDTO> addSchedule(@RequestBody ScheduleDTO scheduleDTO) {
+    ScheduleDTO addedScheduleDTO = scheduleApiService.addSchedule(scheduleDTO);
+    return ResponseEntity.ok(addedScheduleDTO);
   }
 }

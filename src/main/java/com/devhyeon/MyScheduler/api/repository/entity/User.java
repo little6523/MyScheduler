@@ -31,8 +31,8 @@ public class User {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @OneToMany
-  private List<Schedule> schedule;
+  @OneToMany(mappedBy = "user")
+  private List<Schedule> schedules;
 
   public User(String id, String password, String email, Role role) {
     this.id = id;
