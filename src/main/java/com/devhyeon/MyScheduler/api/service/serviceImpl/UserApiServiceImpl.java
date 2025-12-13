@@ -28,4 +28,12 @@ public class UserApiServiceImpl implements UserApiService {
 
     userApiRepository.save(user);
   }
+
+  @Override
+  public Long getUserSeqByUserId(String userId) {
+    User user = userApiRepository.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException("유저 조회중... 유효한 유저가 존재하지 않습니다."));
+
+    return user.getSeq();
+  }
 }

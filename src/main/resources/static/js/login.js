@@ -70,10 +70,9 @@
     })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
-
           if (data.loginSuccessYn === "Y") {
             alert("로그인 성공!");
+            sessionStorage.setItem("userSeq", data.userSeq);
             window.location.href = "/myscheduler/schedule";
           } else {
             alert(data.message);
