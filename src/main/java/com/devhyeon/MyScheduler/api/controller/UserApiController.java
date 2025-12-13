@@ -65,10 +65,13 @@ public class UserApiController {
       // 3) 🔥 세션에 SecurityContext 저장
       securityContextRepository.saveContext(context, request, response);
 
+      String userId = authentication.getName();
+
       // ✅ 로그인 성공 응답 (JSON)
       return ResponseEntity.ok(Map.of(
               "loginSuccessYn", "Y",
-              "id", authentication.getName()
+              "id", userId,
+              "userSeq", userApiService.getUserSeqByUserId(userId)
       ));
     } catch (Exception e) {
       // ❌ 로그인 실패 응답 (JSON)
