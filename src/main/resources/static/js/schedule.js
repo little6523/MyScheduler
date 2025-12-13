@@ -253,6 +253,26 @@ class ScheduleManager {
             color: formData.get('color')
         };
 
+        const userSeq = sessionStorage.getItem("userSeq");
+
+        fetch("/api/schedules", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "userSeq": userSeq,
+                "title": scheduleData.title,
+                "scheduleDate": scheduleData.date + " " + scheduleData.time,
+                "contents": scheduleData.description,
+                "colorId": scheduleData.color
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+            })
+
         if (this.editingScheduleId) {
             // 수정
             const index = this.schedules.findIndex(s => s.id === this.editingScheduleId);
