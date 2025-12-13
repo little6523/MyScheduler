@@ -4,6 +4,8 @@ import com.devhyeon.MyScheduler.common.category.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -16,16 +18,21 @@ public class User {
   private Long seq;
 
   @NonNull
+  @Column(unique = true)
   private String id;
 
   @NonNull
   private String password;
 
+  @Column(unique = true)
   private String email;
 
   @NonNull
   @Enumerated(EnumType.STRING)
   private Role role;
+
+  @OneToMany(mappedBy = "user")
+  private List<Schedule> schedules;
 
   public User(String id, String password, String email, Role role) {
     this.id = id;

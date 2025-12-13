@@ -253,6 +253,26 @@ class ScheduleManager {
             color: formData.get('color')
         };
 
+        const userSeq = sessionStorage.getItem("userSeq");
+
+        fetch("/api/schedules", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "userSeq": userSeq,
+                "title": scheduleData.title,
+                "scheduleDate": scheduleData.date + " " + scheduleData.time,
+                "contents": scheduleData.description,
+                "colorId": scheduleData.color
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+            })
+
         if (this.editingScheduleId) {
             // 수정
             const index = this.schedules.findIndex(s => s.id === this.editingScheduleId);
@@ -297,7 +317,8 @@ class ScheduleManager {
 
     // 유틸리티 함수들
     formatDate(date) {
-        return date.toISOString().split('T')[0];
+        const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+        return kstDate.toISOString().split('T')[0];
     }
 
     isToday(date) {

@@ -6,10 +6,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/myscheduler")
-public class MainViewController {
+public class UserViewController {
 
-  @GetMapping("")
-  public String getMainView() {
-    return "forward:/html/index.html";
+  @GetMapping("/login")
+  public String getUserLoginView() {
+    return "forward:/html/login.html";
+  }
+
+  @GetMapping("/signup")
+  public String getUserSignupView() {
+    return "forward:/html/signup.html";
   }
 }
