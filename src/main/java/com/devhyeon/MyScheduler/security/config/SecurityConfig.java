@@ -14,9 +14,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
 @Configuration
 public class SecurityConfig {
 
@@ -48,18 +45,7 @@ public class SecurityConfig {
             )
             .formLogin(form -> form
                     .loginPage("/myscheduler/login")
-//                    .loginProcessingUrl("/api/login")
-//                    .usernameParameter("id")
-//                    .passwordParameter("password")
-//                    .defaultSuccessUrl("/myscheduler", true)
                     .permitAll()
-//                    .successHandler((request, response, authentication) -> {
-//                      writeSuccess(response, authentication.getName());
-//                    })
-//                    .failureHandler((request, response, exception) -> {
-//                      String message = "아이디 또는 비밀번호가 올바르지 않습니다.";
-//                      writeFailure(response, message);
-//                    })
             )
             .logout(logout -> logout.permitAll())
             .csrf(csrf -> csrf.disable())
@@ -86,34 +72,4 @@ public class SecurityConfig {
     System.out.println("BCryptPasswordEncoder 호출!!");
     return new BCryptPasswordEncoder();
   }
-
-  private void writeSuccess(HttpServletResponse response, String username) throws IOException {
-    writeJson(response, HttpStatus.OK, """
-            {
-              "loginSuccessYn": "Y",
-              "username": "%s"
-            }
-            """.formatted(username));
-  }
-
-  public static void writeFailure(HttpServletResponse response, String message) throws IOException {
-    writeJson(response, HttpStatus.UNAUTHORIZED, """
-            {
-              "loginSuccessYn": "N",
-              "message": "%s"
-            }
-            """.formatted(message));
-  }
-
-  private static void writeJson(HttpServletResponse response, HttpStatus status, String json) throws IOException {
-    response.setStatus(status.value());
-    response.setContentType("application/json");
-    response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-    response.getWriter().write(json);
-  }
-
-//  @Bean
-//  public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-//    return config.getAuthenticationManager();
-//  }
 }
