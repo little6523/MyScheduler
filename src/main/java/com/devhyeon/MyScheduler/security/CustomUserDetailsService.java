@@ -22,6 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     User user = userRepository.findById(username) // 🔁 필요하면 findByLoginId 등으로 변경
             .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
+    System.out.println("AFTER FIND !!!"); // 이거 찍히는지
     System.out.println("userId: " + user.getId() + " password: " + user.getPassword());
 
     // 스프링 시큐리티에서 사용하는 UserDetails 객체로 변환
