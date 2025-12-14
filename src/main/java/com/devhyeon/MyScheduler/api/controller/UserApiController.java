@@ -51,6 +51,8 @@ public class UserApiController {
     UsernamePasswordAuthenticationToken authToken =
             new UsernamePasswordAuthenticationToken(userDTO.getId(), userDTO.getPassword());
 
+    System.out.println("userId: " + userDTO.getId() + " password: " + userDTO.getPassword());
+
     try {
       AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
 
