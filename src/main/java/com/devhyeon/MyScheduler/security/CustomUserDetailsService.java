@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    System.out.println("loadUserByUsername 호출!!!");
+    System.out.println("loadUserByUsername 호출!!!: " + username);
 
     // username = login()에서 만든 authToken 의 첫 번째 파라미터 = userDTO.getId()
     User user = userRepository.findById(username) // 🔁 필요하면 findByLoginId 등으로 변경
