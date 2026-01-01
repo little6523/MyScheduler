@@ -5,12 +5,15 @@ class ScheduleManager {
         this.currentDate = new Date();
         this.editingScheduleId = null;
         this.deletingScheduleId = null;
+        this.prevSelectedDate = null;
         this.selectedDate = new Date();
         
         this.init();
     }
 
     init() {
+        const selectedDateScheduleHeader = document.getElementById('selectedDateScheduleHeader');
+        selectedDateScheduleHeader.innerText = this.formatDate(new Date());
         this.loadSchedules();
     }
 
@@ -86,7 +89,7 @@ class ScheduleManager {
                 this.schedules = data;
                 this.renderCalendar();
                 this.bindEvents();
-                this.renderSelectedDateSchedules();
+                this.renderSelectedDateSchedules(new Date());
             });
     }
 
@@ -139,6 +142,7 @@ class ScheduleManager {
     createDayElement(date, currentMonth) {
         const dayElement = document.createElement('div');
         dayElement.className = 'calendar-day';
+        dayElement.id = this.formatDate(date);
         
         const isCurrentMonth = date.getMonth() === currentMonth;
         const isToday = this.isToday(date);
@@ -162,7 +166,12 @@ class ScheduleManager {
         // 날짜 클릭 이벤트
         dayElement.addEventListener('click', () => {
             this.renderSelectedDateSchedules(date);
+            this.prevSelectedDate = this.selectedDate;
             this.selectedDate = date;
+
+            const prevSelected = document.getElementById(this.formatDate(this.prevSelectedDate));
+            prevSelected.style.backgroundColor = '#ffffff';
+            dayElement.style.backgroundColor = '#e9e6e6';
         });
 
         return dayElement;
