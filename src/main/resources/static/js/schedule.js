@@ -170,7 +170,9 @@ class ScheduleManager {
             this.selectedDate = date;
 
             const prevSelected = document.getElementById(this.formatDate(this.prevSelectedDate));
-            prevSelected.style.backgroundColor = '#ffffff';
+            if (prevSelected != null) {
+                prevSelected.style.backgroundColor = '#ffffff';
+            }
             dayElement.style.backgroundColor = '#e9e6e6';
         });
 
