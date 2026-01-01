@@ -1,18 +1,20 @@
 // 스케줄 관리 애플리케이션
 class ScheduleManager {
     constructor() {
-        this.schedules = this.loadSchedules();
+        this.schedules = [];
         this.currentDate = new Date();
         this.editingScheduleId = null;
         this.deletingScheduleId = null;
+        this.prevSelectedDate = null;
+        this.selectedDate = new Date();
         
         this.init();
     }
 
     init() {
-        this.bindEvents();
-        this.renderCalendar();
-        this.renderTodaySchedules();
+        const selectedDateScheduleHeader = document.getElementById('selectedDateScheduleHeader');
+        selectedDateScheduleHeader.innerText = this.formatDate(new Date());
+        this.loadSchedules();
     }
 
     bindEvents() {
@@ -29,7 +31,7 @@ class ScheduleManager {
 
         // 스케줄 등록 버튼
         document.getElementById('addScheduleBtn').addEventListener('click', () => {
-            this.openScheduleModal();
+            this.openScheduleModal(this.selectedDate);
         });
 
         // 모달 관련 이벤트
@@ -68,8 +70,27 @@ class ScheduleManager {
 
     // 로컬 스토리지에서 스케줄 로드
     loadSchedules() {
-        const saved = localStorage.getItem('schedules');
-        return saved ? JSON.parse(saved) : [];
+        fetch("/api/schedules/" + sessionStorage.getItem('userSeq'), {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(schedule => {
+                    const dateAndTime = schedule.scheduleDate.split(" ");
+                    const date = dateAndTime[0];
+                    const time = dateAndTime[1];
+
+                    delete schedule.scheduleDate;
+                    schedule.date = date;
+                    schedule.time = time;
+                })
+                this.schedules = data;
+                this.renderCalendar();
+                this.bindEvents();
+                this.renderSelectedDateSchedules(new Date());
+            });
     }
 
     // 스케줄 저장
@@ -121,6 +142,7 @@ class ScheduleManager {
     createDayElement(date, currentMonth) {
         const dayElement = document.createElement('div');
         dayElement.className = 'calendar-day';
+        dayElement.id = this.formatDate(date);
         
         const isCurrentMonth = date.getMonth() === currentMonth;
         const isToday = this.isToday(date);
@@ -143,7 +165,15 @@ class ScheduleManager {
 
         // 날짜 클릭 이벤트
         dayElement.addEventListener('click', () => {
-            this.openScheduleModal(date);
+            this.renderSelectedDateSchedules(date);
+            this.prevSelectedDate = this.selectedDate;
+            this.selectedDate = date;
+
+            const prevSelected = document.getElementById(this.formatDate(this.prevSelectedDate));
+            if (prevSelected != null) {
+                prevSelected.style.backgroundColor = '#ffffff';
+            }
+            dayElement.style.backgroundColor = '#e9e6e6';
         });
 
         return dayElement;
@@ -171,22 +201,24 @@ class ScheduleManager {
         return this.schedules.filter(schedule => schedule.date === dateStr);
     }
 
-    // 오늘의 스케줄 렌더링
-    renderTodaySchedules() {
-        const todaySchedules = document.getElementById('todaySchedules');
-        const today = new Date();
-        const todayStr = this.formatDate(today);
-        const schedules = this.schedules.filter(schedule => schedule.date === todayStr);
+    // 스케줄 렌더링
+    renderSelectedDateSchedules(date) {
+        const selectedDateScheduleHeader = document.getElementById('selectedDateScheduleHeader');
+        const selectedDateSchedule = document.getElementById('selectedDateSchedule');
+        const compDate = this.formatDate(date);
+        const schedules = this.schedules.filter(schedule => schedule.date === compDate);
+
+        selectedDateScheduleHeader.innerText = compDate;
 
         if (schedules.length === 0) {
-            todaySchedules.innerHTML = '<div class="schedule-item empty">오늘 등록된 스케줄이 없습니다.</div>';
+            selectedDateSchedule.innerHTML = '<div class="schedule-item empty">오늘 등록된 스케줄이 없습니다.</div>';
             return;
         }
 
         // 시간순으로 정렬
         schedules.sort((a, b) => a.time.localeCompare(b.time));
 
-        todaySchedules.innerHTML = schedules.map(schedule => `
+        selectedDateSchedule.innerHTML = schedules.map(schedule => `
             <div class="schedule-item schedule-${this.getColorClass(schedule.color)}" data-id="${schedule.id}">
                 <div class="schedule-title">${schedule.title}</div>
                 <div class="schedule-time">${schedule.time}</div>
@@ -286,7 +318,7 @@ class ScheduleManager {
 
         this.saveSchedules();
         this.renderCalendar();
-        this.renderTodaySchedules();
+        this.renderSelectedDateSchedules();
         this.closeModals();
     }
 
@@ -302,7 +334,7 @@ class ScheduleManager {
             this.schedules = this.schedules.filter(s => s.id !== this.deletingScheduleId);
             this.saveSchedules();
             this.renderCalendar();
-            this.renderTodaySchedules();
+            this.renderSelectedDateSchedules();
         }
         this.closeModals();
     }
